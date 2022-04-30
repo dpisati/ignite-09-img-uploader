@@ -1,4 +1,4 @@
-import { SimpleGrid, useDisclosure } from '@chakra-ui/react';
+import { Box, Image, SimpleGrid, Text, useDisclosure } from '@chakra-ui/react';
 import { useState } from 'react';
 import { Card } from './Card';
 import { ModalViewImage } from './Modal/ViewImage';
@@ -23,10 +23,14 @@ export function CardList({ cards }: CardsProps): JSX.Element {
   // TODO FUNCTION HANDLE VIEW IMAGE
 
   return (
-    <>
-      {/* TODO CARD GRID */}
-
-      {/* TODO MODALVIEWIMAGE */}
-    </>
+    <SimpleGrid columns={3} spacing={10}>
+      {cards.map(card => (
+        <Box key={card.id}>
+          <Image src={card.url} alt={card.title} />
+          <Text>{card.title}</Text>
+          <Text>{card.description}</Text>
+        </Box>
+      ))}
+    </SimpleGrid>
   );
 }
