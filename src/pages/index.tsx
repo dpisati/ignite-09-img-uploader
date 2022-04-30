@@ -58,13 +58,12 @@ export default function Home(): JSX.Element {
           <Button
             onClick={() => fetchNextPage()}
             disabled={!hasNextPage || isFetchingNextPage}
-            isLoading={isFetchingNextPage}
           >
             {isFetchingNextPage
-              ? 'Loading more...'
+              ? 'Carregando...'
               : hasNextPage
-              ? 'Load More'
-              : 'Nothing more to load'}
+              ? 'Carregar mais'
+              : 'Nada para carregar'}
           </Button>
         )}
       </Box>
