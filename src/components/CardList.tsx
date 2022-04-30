@@ -23,12 +23,26 @@ export function CardList({ cards }: CardsProps): JSX.Element {
   // TODO FUNCTION HANDLE VIEW IMAGE
 
   return (
-    <SimpleGrid columns={3} spacing={10}>
+    <SimpleGrid
+      columns={3}
+      spacing={10}
+      marginBottom="40px"
+      minChildWidth="290px"
+    >
       {cards.map(card => (
-        <Box key={card.id}>
-          <Image src={card.url} alt={card.title} />
-          <Text>{card.title}</Text>
-          <Text>{card.description}</Text>
+        <Box key={card.id} h="290px" bg="#353431" borderRadius={6}>
+          <Image
+            src={card.url}
+            alt={card.title}
+            h="192px"
+            w="100%"
+            objectFit="cover"
+            borderRadius="6px 6px 0 0"
+          />
+          <Text fontWeight="bold" marginTop="20px" mx="25px">
+            {card.title}
+          </Text>
+          <Text mx="25px">{card.description}</Text>
         </Box>
       ))}
     </SimpleGrid>
