@@ -2,14 +2,10 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalFooter,
   ModalBody,
   Image,
-  Link,
-  ModalHeader,
-  ModalCloseButton,
   Text,
-  Button,
+  Link,
 } from '@chakra-ui/react';
 
 interface ModalViewImageProps {
@@ -32,7 +28,12 @@ export function ModalViewImage({
       onClose={onClose}
     >
       <ModalOverlay />
-      <ModalContent bgColor="pGray.800" maxWidth="900px" maxHigh="600px">
+      <ModalContent
+        bgColor="pGray.800"
+        maxWidth="900px"
+        maxHigh="600px"
+        mx="50px"
+      >
         <ModalBody padding="0">
           <Image
             src={imgUrl}
