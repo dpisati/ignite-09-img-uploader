@@ -36,14 +36,8 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
     }
   );
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState,
-    setError,
-    trigger,
-  } = useForm();
+  const { register, handleSubmit, reset, formState, setError, trigger } =
+    useForm();
   const { errors } = formState;
 
   const onSubmit = async (data: Record<string, unknown>): Promise<void> => {
@@ -69,18 +63,49 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
           trigger={trigger}
           // TODO SEND IMAGE ERRORS
           // TODO REGISTER IMAGE INPUT WITH VALIDATIONS
+          {...register('image', {
+            required: 'Arquivo obrigatório',
+            pattern: {
+              value: /.*\.(gif|jpe?g|png)$/gim,
+              message: 'Somente são aceitos arquivos PNG, JPEG e GIF',
+            },
+            validate: {
+              lessThan10MB: file => {
+                console.log(file);
+                return '';
+              },
+            },
+          })}
         />
 
         <TextInput
           placeholder="Título da imagem..."
           // TODO SEND TITLE ERRORS
           // TODO REGISTER TITLE INPUT WITH VALIDATIONS
+          {...register('title', {
+            required: 'Título obrigatório',
+            min: {
+              value: 2,
+              message: 'Mínimo de 2 caracteres',
+            },
+            max: {
+              value: 20,
+              message: 'Máximo de 20 caracteres',
+            },
+          })}
         />
 
         <TextInput
           placeholder="Descrição da imagem..."
           // TODO SEND DESCRIPTION ERRORS
           // TODO REGISTER DESCRIPTION INPUT WITH VALIDATIONS
+          {...register('description', {
+            required: 'Descrição obrigatória',
+            max: {
+              value: 65,
+              message: 'Máximo de 65 caracteres',
+            },
+          })}
         />
       </Stack>
 
