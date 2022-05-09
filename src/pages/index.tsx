@@ -10,8 +10,7 @@ import { Error } from '../components/Error';
 
 export default function Home(): JSX.Element {
   async function fetchImages({ pageParam = 0 }) {
-    const res = await api.get('/api/images?after=' + pageParam);
-    return res;
+    return await api.get('/api/images?after=' + pageParam);    
   }
 
   const getNextPageParam = (nextPage: number) => {
@@ -40,11 +39,10 @@ export default function Home(): JSX.Element {
     }
   }, [data]);
 
-  if (isLoading) {
+  if (isLoading && !isError) {
     return <Loading />;
   }
-
-  if (isError) {
+  if (!isLoading && isError) {
     return <Error />;
   }
 
@@ -52,7 +50,7 @@ export default function Home(): JSX.Element {
     <>
       <Header />
       <Box maxW={1120} px={20} mx="auto" my={20}>
-        {data && <CardList cards={formattedData} />}
+        <CardList cards={formattedData} />
 
         {hasNextPage && (
           <Button
