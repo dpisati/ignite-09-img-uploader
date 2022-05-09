@@ -66,13 +66,8 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
           // TODO SEND IMAGE ERRORS
           error={errors.image}
           // TODO REGISTER IMAGE INPUT WITH VALIDATIONS
-
           {...register('image', {
             required: 'Arquivo obrigatório',
-            // pattern: {
-            //   value: /(gif|jpe?g|png)$/,
-            //   message: 'Somente são aceitos arquivos PNG, JPEG e GIF',
-            // },
             validate: {
               lessThan10MB: file => file[0].size < 10000000 || 'O arquivo deve ser menor que 10MB',
               acceptedFormats: file => new RegExp(/(gif|jpe?g|png)$/).test(file[0].type) || 'Somente são aceitos arquivos PNG, JPEG e GIF.'
@@ -87,11 +82,11 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
           // TODO REGISTER TITLE INPUT WITH VALIDATIONS
           {...register('title', {
             required: 'Título obrigatório',
-            min: {
+            minLength: {
               value: 2,
               message: 'Mínimo de 2 caracteres',
             },
-            max: {
+            maxLength: {
               value: 20,
               message: 'Máximo de 20 caracteres',
             },
@@ -105,7 +100,7 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
           // TODO REGISTER DESCRIPTION INPUT WITH VALIDATIONS
           {...register('description', {
             required: 'Descrição obrigatória',
-            max: {
+            maxLength: {
               value: 65,
               message: 'Máximo de 65 caracteres',
             },
