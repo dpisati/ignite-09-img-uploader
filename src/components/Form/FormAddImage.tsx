@@ -41,15 +41,17 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
   const { errors } = formState;
 
   const onSubmit = async (data: Record<string, unknown>): Promise<void> => {
-    try {
-      // TODO SHOW ERROR TOAST IF IMAGE URL DOES NOT EXISTS
-      // TODO EXECUTE ASYNC MUTATION
-      // TODO SHOW SUCCESS TOAST
-    } catch {
-      // TODO SHOW ERROR TOAST IF SUBMIT FAILED
-    } finally {
-      // TODO CLEAN FORM, STATES AND CLOSE MODAL
-    }
+    console.log('data', data);
+    console.log('errors', errors);
+    // try {
+    //   // TODO SHOW ERROR TOAST IF IMAGE URL DOES NOT EXISTS
+    //   // TODO EXECUTE ASYNC MUTATION
+    //   // TODO SHOW SUCCESS TOAST
+    // } catch {
+    //   // TODO SHOW ERROR TOAST IF SUBMIT FAILED
+    // } finally {
+    //   // TODO CLEAN FORM, STATES AND CLOSE MODAL
+    // }
   };
 
   return (
@@ -62,18 +64,18 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
           setError={setError}
           trigger={trigger}
           // TODO SEND IMAGE ERRORS
+          error={errors.image}
           // TODO REGISTER IMAGE INPUT WITH VALIDATIONS
+
           {...register('image', {
             required: 'Arquivo obrigatório',
-            pattern: {
-              value: /.*\.(gif|jpe?g|png)$/gim,
-              message: 'Somente são aceitos arquivos PNG, JPEG e GIF',
-            },
+            // pattern: {
+            //   value: /(gif|jpe?g|png)$/,
+            //   message: 'Somente são aceitos arquivos PNG, JPEG e GIF',
+            // },
             validate: {
-              lessThan10MB: file => {
-                console.log(file);
-                return '';
-              },
+              lessThan10MB: file => file[0].size < 10000000 || 'O arquivo deve ser menor que 10MB',
+              acceptedFormats: file => new RegExp(/(gif|jpe?g|png)$/).test(file[0].type) || 'Somente são aceitos arquivos PNG, JPEG e GIF.'
             },
           })}
         />
@@ -81,6 +83,7 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
         <TextInput
           placeholder="Título da imagem..."
           // TODO SEND TITLE ERRORS
+          error={errors.title}
           // TODO REGISTER TITLE INPUT WITH VALIDATIONS
           {...register('title', {
             required: 'Título obrigatório',
@@ -97,6 +100,7 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
 
         <TextInput
           placeholder="Descrição da imagem..."
+          error={errors.description}
           // TODO SEND DESCRIPTION ERRORS
           // TODO REGISTER DESCRIPTION INPUT WITH VALIDATIONS
           {...register('description', {
