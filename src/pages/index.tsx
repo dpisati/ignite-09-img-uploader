@@ -8,13 +8,27 @@ import { api } from '../services/api';
 import { Loading } from '../components/Loading';
 import { Error } from '../components/Error';
 
-export default function Home(): JSX.Element {
-  async function fetchImages({ pageParam = 0 }) {
-    return await api.get('/api/images?after=' + pageParam);    
-  }
+type Image = {
+  title: string;
+  description: string;
+  url: string;
+  ts: number;
+  id: string;
+};
 
-  const getNextPageParam = (nextPage: number) => {
-    return nextPage;
+interface GetImagesResponse {
+  after: string;
+  data: Image[];
+}
+
+export default function Home(): JSX.Element {
+  const fetchImages = async ({
+    pageParam = null,
+  }): Promise<GetImagesResponse> => {
+    const { data } = await api.get('/api/images', {
+      params: { after: pageParam },
+    });
+    return data;
   };
 
   const {
@@ -25,18 +39,14 @@ export default function Home(): JSX.Element {
     fetchNextPage,
     hasNextPage,
   } = useInfiniteQuery('images', fetchImages, {
-    getNextPageParam: pageParam => getNextPageParam(pageParam.data.after),
+    getNextPageParam: lastPage => lastPage?.after || null,
   });
 
   const formattedData = useMemo(() => {
-    if (data) {
-      const result = data.pages
-        .map(page => {
-          return page.data.data;
-        })
-        .flat();
-      return result;
-    }
+    const formatted = data?.pages.flatMap(imageData => {
+      return imageData.data.flat();
+    });
+    return formatted;
   }, [data]);
 
   if (isLoading && !isError) {
@@ -55,13 +65,14 @@ export default function Home(): JSX.Element {
         {hasNextPage && (
           <Button
             onClick={() => fetchNextPage()}
-            disabled={!hasNextPage || isFetchingNextPage}
+            disabled={isFetchingNextPage}
           >
-            {isFetchingNextPage
+            {isFetchingNextPage ? 'Carregando...' : 'Carregar mais'}
+            {/* {isFetchingNextPage
               ? 'Carregando...'
               : hasNextPage
               ? 'Carregar mais'
-              : 'Nada para carregar'}
+              : 'Nada para carregar'} */}
           </Button>
         )}
       </Box>
